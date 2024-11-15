@@ -712,9 +712,9 @@
                     "createOption": "FromImage"
                   },
                   "imageReference": {
-                    "publisher": "MicrosoftOSTC",
-                    "offer": "FreeBSD",
-                    "sku": "12.0",
+                    "publisher": "thefreebsdfoundation",
+                    "offer": "freebsd-14_1",
+                    "sku": "14_1-release-amd64-gen2-zfs",
                     "version": "latest"
                   }
                 },
