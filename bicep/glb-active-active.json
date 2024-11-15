@@ -31,7 +31,7 @@
     "TempPassword": {
       "type": "secureString",
       "metadata": {
-        "description": "Default Temporary Admin password (Used for JumpBox and temporarily deploy FreeBSD VM)."
+        "description": "Default Temporary Admin password (Used for JumpBox and temporarily deploy  VM)."
       }
     },
     "existingVirtualNetworkName": {
@@ -735,6 +735,11 @@
                   ]
                 }
               },
+              "plan": {
+                "name": "14_1-release-amd64-gen2-zfs",
+                "publisher": "thefreebsdfoundation",
+                "product": "freebsd-14_1"
+              },              
               "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('trustedNicName'))]",
                 "[resourceId('Microsoft.Resources/deployments', variables('untrustedNicName'))]"
@@ -1103,6 +1108,11 @@
                   ]
                 }
               },
+              "plan": {
+                "name": "14_1-release-amd64-gen2-zfs",
+                "publisher": "thefreebsdfoundation",
+                "product": "freebsd-14_1"
+              },              
               "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('trustedNicName'))]",
                 "[resourceId('Microsoft.Resources/deployments', variables('untrustedNicName'))]"
