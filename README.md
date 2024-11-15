@@ -4,14 +4,14 @@
 
 - [Introduction](#introduction)
 - [Network diagram](#network-diagram)
-    - [Components and traffic flow](#components-and-traffic-flow)
+    - [Components and traffic flow](#components-and-traffic-flow
     - [Considerations](#considerations)
 - [ARM Template](#arm-template)
 - [Deploy this solution](#deploy-this-solution)
     - [Prerequisites](#lab-prerequisites)
     - [Consumer](#consumer)
     - [Provider](#provider)
-- [Traffic inspection](#traffic-inspection)
+- [Traffic inspection](#traffic-inspection)dm
     - [Layer 4](#layer-4-firewall)
     - [Layer 7](#layer-7-inspection)
     - [IDS](#intrusion-detection-ids)
@@ -24,7 +24,7 @@ As part of the lab provisioning, two environments will be created. One is the co
 
 GLB will be using a pair of open-source OPNsense NVAs as its backend, and we will explore some basic filtering capabilities initially and other advanced capabilities like IDS.
 
-**Note:** for more information on OPNsense provisioning in Azure, check a dedicated repo with some other deployments: [OPNSense in Azure using bootstrap](https://github.com/dmauser/opnazure)
+**Note:** for more information on OPNsense provisioning in Azure, check a dedicated repo with some other deployments: [OPNSense in Azure using bootstrap](https://github.com/kimdele/opnazure)
 
 We assume you have some basic knowledge of what GLB is. If not, below are some references to bring you up to the speed on GLB:
 
@@ -108,8 +108,8 @@ Here are some details how that VXLAN overlay is built for internal and external 
 Before going over all the lab steps, you can deploy the provider side of this solution in your environment using an ARM template and the "Deploy to Azure" button. The available template below assumes that you have an existing Virtual Network (VNET) and at least two subnets: Untrusted (or External) and Trusted (or Internal).
 If you deploy the provider side using that template, you will not need to go through steps of the provider unless you want to deploy Azure Bastion.
 
-[![Deploy To Azure](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fdmauser%2Fazure-gateway-lb%2Fmain%2FARM%2Fglb-active-active.json)
-[![Visualize](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/visualizebutton.svg?sanitize=true)](http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Fdmauser%2Fazure-gateway-lb%2Fmain%2FARM%2Fglb-active-active.json)
+[![Deploy To Azure](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fkimdele%2Fazure-gateway-lb%2Fmain%2FARM%2Fglb-active-active.json)
+[![Visualize](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/visualizebutton.svg?sanitize=true)](http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Fkimdele%2Fazure-gateway-lb%2Fmain%2FARM%2Fglb-active-active.json)
 
 Also review the [Considerations after provisioning provider NVAs:](#considerations-after-provisioning-provider-nvas) to properly access and managed provisioned NVAs.
 
@@ -247,7 +247,7 @@ az network vnet subnet create --name internal --resource-group $provider_rg --vn
 
 # 2) Deploy both OPNsense NVA (work on this)
 az deployment group create --name $nva-deploy-$RANDOM --resource-group $provider_rg \
---template-uri "https://raw.githubusercontent.com/dmauser/azure-gateway-lb/main/bicep/glb-active-active.json" \
+--template-uri "https://raw.githubusercontent.com/kimdele/azure-gateway-lb/main/bicep/glb-active-active.json" \
 --parameters virtualMachineSize=Standard_B2s virtualMachineName=$nva TempUsername=azureuser TempPassword=Msft123Msft123 existingVirtualNetworkName=provider-vnet existingUntrustedSubnet=external existingTrustedSubnet=internal PublicIPAddressSku=Standard \
 --no-wait
 
