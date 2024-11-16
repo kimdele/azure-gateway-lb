@@ -53,12 +53,12 @@ echo "gwip $gwip" >> /var/log/kde.txt
 
 # 1. Package to get root certificate bundle from the Mozilla Project (FreeBSD)
 # 2. Install bash to support Azure Backup integration
-##env IGNORE_OSVERSION=yes
-##pkg bootstrap -f; pkg update -f
-##env ASSUME_ALWAYS_YES=YES pkg install ca_root_nss && pkg install -y bash
+env IGNORE_OSVERSION=yes
+pkg bootstrap -f; pkg update -f
+env ASSUME_ALWAYS_YES=YES pkg install ca_root_nss && pkg install -y bash
 
 #Download OPNSense Bootstrap and Permit Root Remote Login
-###fetch https://raw.githubusercontent.com/opnsense/update/7ba940e0d57ece480540c4fd79e9d99a87f222c8/src/bootstrap/opnsense-bootstrap.sh.in
+#fetch https://raw.githubusercontent.com/opnsense/update/7ba940e0d57ece480540c4fd79e9d99a87f222c8/src/bootstrap/opnsense-bootstrap.sh.in
 fetch https://raw.githubusercontent.com/opnsense/update/master/src/bootstrap/opnsense-bootstrap.sh.in
 sed -i "" 's/#PermitRootLogin no/PermitRootLogin yes/' /etc/ssh/sshd_config
 
@@ -83,8 +83,8 @@ cd ..
 
 # Fix waagent by replacing configuration settings
 ln -s /usr/local/bin/python3.11 /usr/local/bin/python
-##sed -i "" 's/command_interpreter="python"/command_interpreter="python3"/' /etc/rc.d/waagent
-##sed -i "" 's/#!\/usr\/bin\/env python/#!\/usr\/bin\/env python3/' /usr/local/sbin/waagent
+sed -i "" 's/command_interpreter="python"/command_interpreter="python3"/' /etc/rc.d/waagent
+sed -i "" 's/#!\/usr\/bin\/env python/#!\/usr\/bin\/env python3/' /usr/local/sbin/waagent
 sed -i "" 's/ResourceDisk.EnableSwap=y/ResourceDisk.EnableSwap=n/' /etc/waagent.conf
 fetch $1actions_waagent.conf
 cp actions_waagent.conf /usr/local/opnsense/service/conf/actions.d
@@ -105,45 +105,45 @@ chmod +x /usr/local/etc/rc.syshook.d/start/22-remoteroute
 
 echo "script end" >> /var/log/kde.txt
 #VXLAN config
-##if [ "$2" = "Primary" ]; then
-##   echo ifconfig hn0 mtu 4000 >> /usr/local/etc/rc.syshook.d/start/25-azure
-##   echo ifconfig hn1 mtu 4000 >> /usr/local/etc/rc.syshook.d/start/25-azure
-##    echo ifconfig vxlan0 down >> /usr/local/etc/rc.syshook.d/start/25-azure
-##    echo ifconfig vxlan0 vxlanlocal $5 vxlanremote $6 vxlanlocalport 10800 vxlanremoteport 10800 >> /usr/local/etc/rc.syshook.d/start/25-azure
-##    echo ifconfig vxlan0 up >> /usr/local/etc/rc.syshook.d/start/25-azure
-##    echo ifconfig vxlan1 down >> /usr/local/etc/rc.syshook.d/start/25-azure
-##    echo ifconfig vxlan1 vxlanlocal $5 vxlanremote $6 vxlanlocalport 10801 vxlanremoteport 10801 >> /usr/local/etc/rc.syshook.d/start/25-azure
-##    echo ifconfig vxlan1 up >> /usr/local/etc/rc.syshook.d/start/25-azure
-##    echo ifconfig bridge0 addm vxlan0 >> /usr/local/etc/rc.syshook.d/start/25-azure
-##    echo ifconfig bridge0 addm vxlan1 >> /usr/local/etc/rc.syshook.d/start/25-azure
-##    chmod +x /usr/local/etc/rc.syshook.d/start/25-azure 
-##elif [ "$2" = "Secondary" ]; then
-##    echo ifconfig hn0 mtu 4000 >> /usr/local/etc/rc.syshook.d/start/25-azure
-##    echo ifconfig hn1 mtu 4000 >> /usr/local/etc/rc.syshook.d/start/25-azure
-##    echo ifconfig vxlan0 down >> /usr/local/etc/rc.syshook.d/start/25-azure
-##    echo ifconfig vxlan0 vxlanlocal $4 vxlanremote $5 vxlanlocalport 10800 vxlanremoteport 10800 >> /usr/local/etc/rc.syshook.d/start/25-azure
-##    echo ifconfig vxlan0 up >> /usr/local/etc/rc.syshook.d/start/25-azure
-##    echo ifconfig vxlan1 down >> /usr/local/etc/rc.syshook.d/start/25-azure
-##    echo ifconfig vxlan1 vxlanlocal $4 vxlanremote $5 vxlanlocalport 10801 vxlanremoteport 10801 >> /usr/local/etc/rc.syshook.d/start/25-azure
-##    echo ifconfig vxlan1 up >> /usr/local/etc/rc.syshook.d/start/25-azure
-##    echo ifconfig bridge0 addm vxlan0 >> /usr/local/etc/rc.syshook.d/start/25-azure
-##    echo ifconfig bridge0 addm vxlan1 >> /usr/local/etc/rc.syshook.d/start/25-azure
-##    chmod +x /usr/local/etc/rc.syshook.d/start/25-azure 
-##    chmod +x /usr/local/etc/rc.syshook.d/start/25-azure
-##fi
+if [ "$2" = "Primary" ]; then
+   echo ifconfig hn0 mtu 4000 >> /usr/local/etc/rc.syshook.d/start/25-azure
+   echo ifconfig hn1 mtu 4000 >> /usr/local/etc/rc.syshook.d/start/25-azure
+    echo ifconfig vxlan0 down >> /usr/local/etc/rc.syshook.d/start/25-azure
+    echo ifconfig vxlan0 vxlanlocal $5 vxlanremote $6 vxlanlocalport 10800 vxlanremoteport 10800 >> /usr/local/etc/rc.syshook.d/start/25-azure
+    echo ifconfig vxlan0 up >> /usr/local/etc/rc.syshook.d/start/25-azure
+    echo ifconfig vxlan1 down >> /usr/local/etc/rc.syshook.d/start/25-azure
+    echo ifconfig vxlan1 vxlanlocal $5 vxlanremote $6 vxlanlocalport 10801 vxlanremoteport 10801 >> /usr/local/etc/rc.syshook.d/start/25-azure
+    echo ifconfig vxlan1 up >> /usr/local/etc/rc.syshook.d/start/25-azure
+    echo ifconfig bridge0 addm vxlan0 >> /usr/local/etc/rc.syshook.d/start/25-azure
+    echo ifconfig bridge0 addm vxlan1 >> /usr/local/etc/rc.syshook.d/start/25-azure
+    chmod +x /usr/local/etc/rc.syshook.d/start/25-azure 
+elif [ "$2" = "Secondary" ]; then
+    echo ifconfig hn0 mtu 4000 >> /usr/local/etc/rc.syshook.d/start/25-azure
+    echo ifconfig hn1 mtu 4000 >> /usr/local/etc/rc.syshook.d/start/25-azure
+    echo ifconfig vxlan0 down >> /usr/local/etc/rc.syshook.d/start/25-azure
+    echo ifconfig vxlan0 vxlanlocal $4 vxlanremote $5 vxlanlocalport 10800 vxlanremoteport 10800 >> /usr/local/etc/rc.syshook.d/start/25-azure
+    echo ifconfig vxlan0 up >> /usr/local/etc/rc.syshook.d/start/25-azure
+    echo ifconfig vxlan1 down >> /usr/local/etc/rc.syshook.d/start/25-azure
+    echo ifconfig vxlan1 vxlanlocal $4 vxlanremote $5 vxlanlocalport 10801 vxlanremoteport 10801 >> /usr/local/etc/rc.syshook.d/start/25-azure
+    echo ifconfig vxlan1 up >> /usr/local/etc/rc.syshook.d/start/25-azure
+    echo ifconfig bridge0 addm vxlan0 >> /usr/local/etc/rc.syshook.d/start/25-azure
+    echo ifconfig bridge0 addm vxlan1 >> /usr/local/etc/rc.syshook.d/start/25-azure
+    chmod +x /usr/local/etc/rc.syshook.d/start/25-azure 
+    chmod +x /usr/local/etc/rc.syshook.d/start/25-azure
+fi
 
 #Adds support to LB probe from IP 168.63.129.16
 # Add Azure VIP on Arp table
-##echo # Add Azure Internal VIP >> /etc/rc.conf
-##echo static_arp_pairs=\"azvip\" >>  /etc/rc.conf
-##echo static_arp_azvip=\"168.63.129.16 12:34:56:78:9a:bc\" >> /etc/rc.conf
+echo # Add Azure Internal VIP >> /etc/rc.conf
+echo static_arp_pairs=\"azvip\" >>  /etc/rc.conf
+echo static_arp_azvip=\"168.63.129.16 12:34:56:78:9a:bc\" >> /etc/rc.conf
 # Makes arp effective
-##service static_arp start
+service static_arp start
 # To survive boots adding to OPNsense Autorun/Bootup:
-##echo service static_arp start >> /usr/local/etc/rc.syshook.d/start/20-freebsd
+echo service static_arp start >> /usr/local/etc/rc.syshook.d/start/20-freebsd
 
 # Reset WebGUI certificate
-##echo #\!/bin/sh >> /usr/local/etc/rc.syshook.d/start/94-restartwebgui
-##echo configctl webgui restart renew >> /usr/local/etc/rc.syshook.d/start/94-restartwebgui
-##echo rm /usr/local/etc/rc.syshook.d/start/94-restartwebgui >> /usr/local/etc/rc.syshook.d/start/94-restartwebgui
-##chmod +x /usr/local/etc/rc.syshook.d/start/94-restartwebgui
+echo #\!/bin/sh >> /usr/local/etc/rc.syshook.d/start/94-restartwebgui
+echo configctl webgui restart renew >> /usr/local/etc/rc.syshook.d/start/94-restartwebgui
+echo rm /usr/local/etc/rc.syshook.d/start/94-restartwebgui >> /usr/local/etc/rc.syshook.d/start/94-restartwebgui
+chmod +x /usr/local/etc/rc.syshook.d/start/94-restartwebgui
