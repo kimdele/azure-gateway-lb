@@ -1,5 +1,6 @@
 #!/bin/sh
 
+echo "script start" >> /var/log/kde.txt
 # Script Params
 # $1 = OPNScriptURI
 # $2 = Primary/Secondary/SingNic/TwoNics
@@ -39,6 +40,12 @@ elif [ "$2" = "TwoNics" ]; then
     sed -i "" "s/rrr.rrr.rrr.rrr/$5/" config.xml
     cp config.xml /usr/local/etc/config.xml
 fi
+
+
+echo "3 $3" >> /var/log/kde.txt
+echo "4 $4" >> /var/log/kde.txt
+echo "5 $5" >> /var/log/kde.txt
+echo "gwip $gwip" >> /var/log/kde.txt
 
 #OPNSense default configuration template
 #fetch https://raw.githubusercontent.com/dmauser/opnazure/master/scripts/$1
@@ -91,46 +98,47 @@ route delete 168.63.129.16
 EOL
 chmod +x /usr/local/etc/rc.syshook.d/start/22-remoteroute
 
+echo "script end" >> /var/log/kde.txt
 #VXLAN config
-if [ "$2" = "Primary" ]; then
-    echo ifconfig hn0 mtu 4000 >> /usr/local/etc/rc.syshook.d/start/25-azure
-    echo ifconfig hn1 mtu 4000 >> /usr/local/etc/rc.syshook.d/start/25-azure
-    echo ifconfig vxlan0 down >> /usr/local/etc/rc.syshook.d/start/25-azure
-    echo ifconfig vxlan0 vxlanlocal $5 vxlanremote $6 vxlanlocalport 10800 vxlanremoteport 10800 >> /usr/local/etc/rc.syshook.d/start/25-azure
-    echo ifconfig vxlan0 up >> /usr/local/etc/rc.syshook.d/start/25-azure
-    echo ifconfig vxlan1 down >> /usr/local/etc/rc.syshook.d/start/25-azure
-    echo ifconfig vxlan1 vxlanlocal $5 vxlanremote $6 vxlanlocalport 10801 vxlanremoteport 10801 >> /usr/local/etc/rc.syshook.d/start/25-azure
-    echo ifconfig vxlan1 up >> /usr/local/etc/rc.syshook.d/start/25-azure
-    echo ifconfig bridge0 addm vxlan0 >> /usr/local/etc/rc.syshook.d/start/25-azure
-    echo ifconfig bridge0 addm vxlan1 >> /usr/local/etc/rc.syshook.d/start/25-azure
-    chmod +x /usr/local/etc/rc.syshook.d/start/25-azure 
-elif [ "$2" = "Secondary" ]; then
-    echo ifconfig hn0 mtu 4000 >> /usr/local/etc/rc.syshook.d/start/25-azure
-    echo ifconfig hn1 mtu 4000 >> /usr/local/etc/rc.syshook.d/start/25-azure
-    echo ifconfig vxlan0 down >> /usr/local/etc/rc.syshook.d/start/25-azure
-    echo ifconfig vxlan0 vxlanlocal $4 vxlanremote $5 vxlanlocalport 10800 vxlanremoteport 10800 >> /usr/local/etc/rc.syshook.d/start/25-azure
-    echo ifconfig vxlan0 up >> /usr/local/etc/rc.syshook.d/start/25-azure
-    echo ifconfig vxlan1 down >> /usr/local/etc/rc.syshook.d/start/25-azure
-    echo ifconfig vxlan1 vxlanlocal $4 vxlanremote $5 vxlanlocalport 10801 vxlanremoteport 10801 >> /usr/local/etc/rc.syshook.d/start/25-azure
-    echo ifconfig vxlan1 up >> /usr/local/etc/rc.syshook.d/start/25-azure
-    echo ifconfig bridge0 addm vxlan0 >> /usr/local/etc/rc.syshook.d/start/25-azure
-    echo ifconfig bridge0 addm vxlan1 >> /usr/local/etc/rc.syshook.d/start/25-azure
-    chmod +x /usr/local/etc/rc.syshook.d/start/25-azure 
-    chmod +x /usr/local/etc/rc.syshook.d/start/25-azure
-fi
+##if [ "$2" = "Primary" ]; then
+##   echo ifconfig hn0 mtu 4000 >> /usr/local/etc/rc.syshook.d/start/25-azure
+##   echo ifconfig hn1 mtu 4000 >> /usr/local/etc/rc.syshook.d/start/25-azure
+##    echo ifconfig vxlan0 down >> /usr/local/etc/rc.syshook.d/start/25-azure
+##    echo ifconfig vxlan0 vxlanlocal $5 vxlanremote $6 vxlanlocalport 10800 vxlanremoteport 10800 >> /usr/local/etc/rc.syshook.d/start/25-azure
+##    echo ifconfig vxlan0 up >> /usr/local/etc/rc.syshook.d/start/25-azure
+##    echo ifconfig vxlan1 down >> /usr/local/etc/rc.syshook.d/start/25-azure
+##    echo ifconfig vxlan1 vxlanlocal $5 vxlanremote $6 vxlanlocalport 10801 vxlanremoteport 10801 >> /usr/local/etc/rc.syshook.d/start/25-azure
+##    echo ifconfig vxlan1 up >> /usr/local/etc/rc.syshook.d/start/25-azure
+##    echo ifconfig bridge0 addm vxlan0 >> /usr/local/etc/rc.syshook.d/start/25-azure
+##    echo ifconfig bridge0 addm vxlan1 >> /usr/local/etc/rc.syshook.d/start/25-azure
+##    chmod +x /usr/local/etc/rc.syshook.d/start/25-azure 
+##elif [ "$2" = "Secondary" ]; then
+##    echo ifconfig hn0 mtu 4000 >> /usr/local/etc/rc.syshook.d/start/25-azure
+##    echo ifconfig hn1 mtu 4000 >> /usr/local/etc/rc.syshook.d/start/25-azure
+##    echo ifconfig vxlan0 down >> /usr/local/etc/rc.syshook.d/start/25-azure
+##    echo ifconfig vxlan0 vxlanlocal $4 vxlanremote $5 vxlanlocalport 10800 vxlanremoteport 10800 >> /usr/local/etc/rc.syshook.d/start/25-azure
+##    echo ifconfig vxlan0 up >> /usr/local/etc/rc.syshook.d/start/25-azure
+##    echo ifconfig vxlan1 down >> /usr/local/etc/rc.syshook.d/start/25-azure
+##    echo ifconfig vxlan1 vxlanlocal $4 vxlanremote $5 vxlanlocalport 10801 vxlanremoteport 10801 >> /usr/local/etc/rc.syshook.d/start/25-azure
+##    echo ifconfig vxlan1 up >> /usr/local/etc/rc.syshook.d/start/25-azure
+##    echo ifconfig bridge0 addm vxlan0 >> /usr/local/etc/rc.syshook.d/start/25-azure
+##    echo ifconfig bridge0 addm vxlan1 >> /usr/local/etc/rc.syshook.d/start/25-azure
+##    chmod +x /usr/local/etc/rc.syshook.d/start/25-azure 
+##    chmod +x /usr/local/etc/rc.syshook.d/start/25-azure
+##fi
 
 #Adds support to LB probe from IP 168.63.129.16
 # Add Azure VIP on Arp table
-echo # Add Azure Internal VIP >> /etc/rc.conf
-echo static_arp_pairs=\"azvip\" >>  /etc/rc.conf
-echo static_arp_azvip=\"168.63.129.16 12:34:56:78:9a:bc\" >> /etc/rc.conf
+##echo # Add Azure Internal VIP >> /etc/rc.conf
+##echo static_arp_pairs=\"azvip\" >>  /etc/rc.conf
+##echo static_arp_azvip=\"168.63.129.16 12:34:56:78:9a:bc\" >> /etc/rc.conf
 # Makes arp effective
-service static_arp start
+##service static_arp start
 # To survive boots adding to OPNsense Autorun/Bootup:
-echo service static_arp start >> /usr/local/etc/rc.syshook.d/start/20-freebsd
+##echo service static_arp start >> /usr/local/etc/rc.syshook.d/start/20-freebsd
 
 # Reset WebGUI certificate
-echo #\!/bin/sh >> /usr/local/etc/rc.syshook.d/start/94-restartwebgui
-echo configctl webgui restart renew >> /usr/local/etc/rc.syshook.d/start/94-restartwebgui
-echo rm /usr/local/etc/rc.syshook.d/start/94-restartwebgui >> /usr/local/etc/rc.syshook.d/start/94-restartwebgui
-chmod +x /usr/local/etc/rc.syshook.d/start/94-restartwebgui
+##echo #\!/bin/sh >> /usr/local/etc/rc.syshook.d/start/94-restartwebgui
+##echo configctl webgui restart renew >> /usr/local/etc/rc.syshook.d/start/94-restartwebgui
+##echo rm /usr/local/etc/rc.syshook.d/start/94-restartwebgui >> /usr/local/etc/rc.syshook.d/start/94-restartwebgui
+##chmod +x /usr/local/etc/rc.syshook.d/start/94-restartwebgui
