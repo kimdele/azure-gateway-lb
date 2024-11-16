@@ -62,6 +62,7 @@ echo "gwip $gwip" >> /var/log/kde.txt
 fetch https://raw.githubusercontent.com/opnsense/update/master/src/bootstrap/opnsense-bootstrap.sh.in
 sed -i "" 's/#PermitRootLogin no/PermitRootLogin yes/' /etc/ssh/sshd_config
 
+echo "install opnsense" >> /var/log/kde.txt
 #OPNSense
 # Due to a recent change in pkg the following commands no longer finish with status code 0
 #		pkg unlock -a
@@ -70,6 +71,8 @@ sed -i "" 's/#PermitRootLogin no/PermitRootLogin yes/' /etc/ssh/sshd_config
 sed -i "" "s/set -e/#set -e/g" opnsense-bootstrap.sh.in
 sed -i "" "s/reboot/shutdown -r +1/g" opnsense-bootstrap.sh.in
 sh ./opnsense-bootstrap.sh.in -y -r "24.7"
+
+echo "install waagent" >> /var/log/kde.txt
 
 # Add Azure waagent
 fetch https://github.com/Azure/WALinuxAgent/archive/refs/tags/v2.11.1.4.tar.gz
@@ -85,6 +88,8 @@ ln -s /usr/local/bin/python3.11 /usr/local/bin/python
 sed -i "" 's/ResourceDisk.EnableSwap=y/ResourceDisk.EnableSwap=n/' /etc/waagent.conf
 fetch $1actions_waagent.conf
 cp actions_waagent.conf /usr/local/opnsense/service/conf/actions.d
+
+echo "install pkg" >> /var/log/kde.txt
 
 # Installing bash - This is a requirement for Azure custom Script extension to run
 pkg install -y bash
